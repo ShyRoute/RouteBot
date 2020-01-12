@@ -34,7 +34,7 @@ function daySolve(id) {
 function checkSolve(id, number){
   try{
     var $ = getweb("https://www.acmicpc.net/status?problem_id="+number+"&user_id=" + id + "&result_id=4");
-    return $.split("맞았습니다").length>2;} solveProblem(number, id);
+    return $.split("맞았습니다").length>2;
   } catch (e) {
     return ("# Parsing Error");
   }
@@ -88,6 +88,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply("# 등록되지 않은 사용자입니다.");
         return;
       }
+    }
+
+    else if (input == "#cs") {
+	data = data.split(" ");
+	var solved = checkSolve(id[data[0]], data[1]);
+	replier.reply(solved ? "풀었습니다!" : "새로운 문제는 언제나 환영이야!");
+	return;
     }
   }
 }
