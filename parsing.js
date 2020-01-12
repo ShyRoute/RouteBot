@@ -97,7 +97,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
     else if (input == "#ds") {
       if (data in id) {
-	var SolveCount = daySolve(id[dat]);
+	var SolveCount = daySolve(id[data]);
         var text = data + "아 오늘은 " + SolveCount + "문제 풀었니?";
         replier.reply(text);
         replier.reply(SolveCount <= 2 ? "동근이가 널 찾고 있단다" : "참 잘했어요! 도장 쾅");
