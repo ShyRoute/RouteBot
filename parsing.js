@@ -7,6 +7,17 @@ const id = { };
 function getweb(URL) { return Utils.getWebText(URL).replace(/<[^>]+>/g, "").replace(/(<([^>]+)>)/g, "").replace(/[\n\s]{2,}/g, "\n").trim(); }
 
 // Contribution by DongGeun Yun (ydk1104)
+function checkProblem(number) {
+  try {
+    var $ = getweb("https://www.acmicpc.net/problem/" + number);
+    return true;
+  }
+  catch (e) {
+    replier.reply("# No Problem " + number + "!");
+    return false;
+  }
+}
+
 function getBojProblem(n) {
   try {
     var $ = getweb("https://www.acmicpc.net/problem/" + n).split("강의 요청하기")[1].split("문제");
@@ -53,6 +64,10 @@ function foodFind(day) {
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
   if (room_name.indexOf(room) != -1) {
     msg = msg.trim();
+    if (msg[0] != '#') {
+      return;
+    }
+
     var input = msg.split(" ")[0];
     var data = msg.replace(input + " ", "");
 
@@ -70,6 +85,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
 
     else if (input == "#boj") {
+      if (checkProblem(data) == false){
+        return;
+      }
+
       replier.reply("boj.kr/" + data);
       var text = getBojProblem(data) + '\nmade by ★';
       replier.reply(text);
@@ -91,10 +110,17 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
 
     else if (input == "#cs") {
-	data = data.split(" ");
+      data = data.split(" ");
+      if (checkProblem(data[1]) == false) return;
+      if (data[0] in id) {
 	var solved = checkSolve(id[data[0]], data[1]);
 	replier.reply(solved ? "풀었습니다!" : "새로운 문제는 언제나 환영이야!");
 	return;
+      }
+      else {
+        replier.reply("#등록되지 않은 사용자입니다.");
+	return;
+      }
     }
   }
 }
