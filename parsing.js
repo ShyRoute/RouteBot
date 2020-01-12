@@ -30,6 +30,16 @@ function daySolve(id) {
   }
 }
 
+//check id sovlve boj.kr/number
+function checkSolve(id, number){
+  try{
+    var $ = getweb("https://www.acmicpc.net/status?problem_id="+number+"&user_id=" + id + "&result_id=4");
+    return $.split("맞았습니다").length>2;} solveProblem(number, id);
+  } catch (e) {
+    return ("# Parsing Error");
+  }
+}
+
 function foodFind(day) {
   try {
     var result = getweb("https://www.hanyang.ac.kr/web/www/re8").split("중식/석식")[4].split("[tab2]")[0].replace(/amp;/g, "").split("-->");
