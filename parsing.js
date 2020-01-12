@@ -6,18 +6,17 @@ const id = { };
 
 function getweb(URL) { return Utils.getWebText(URL).replace(/<[^>]+>/g, "").replace(/(<([^>]+)>)/g, "").replace(/[\n\s]{2,}/g, "\n").trim(); }
 
-// Contribution by DongGeun Yun (ydk1104)
 function checkProblem(number) {
   try {
     var $ = getweb("https://www.acmicpc.net/problem/" + number);
     return true;
   }
   catch (e) {
-    replier.reply("# No Problem " + number + "!");
     return false;
   }
 }
 
+// Contribution by DongGeun Yun (ydk1104)
 function getBojProblem(n) {
   try {
     var $ = getweb("https://www.acmicpc.net/problem/" + n).split("강의 요청하기")[1].split("문제");
@@ -42,10 +41,10 @@ function daySolve(id) {
 }
 
 //check id sovlve boj.kr/number
-function checkSolve(id, number){
-  try{
-    var $ = getweb("https://www.acmicpc.net/status?problem_id="+number+"&user_id=" + id + "&result_id=4");
-    return $.split("맞았습니다").length>2;
+function checkSolve(id, number) {
+  try {
+    var $ = getweb("https://www.acmicpc.net/status?problem_id=" + number + "&user_id=" + id + "&result_id=4");
+    return $.split("맞았습니다").length > 2;
   } catch (e) {
     return ("# Parsing Error");
   }
@@ -85,7 +84,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
 
     else if (input == "#boj") {
-      if (checkProblem(data) == false){
+      if (checkProblem(data) == false) {
+        replier.reply("# No Problem " + data + "!");
         return;
       }
 
@@ -102,7 +102,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply("동근이가 널 찾고 있단다");
         return;
       }
-      
+
       else {
         replier.reply("# 등록되지 않은 사용자입니다.");
         return;
@@ -111,15 +111,18 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
     else if (input == "#cs") {
       data = data.split(" ");
-      if (checkProblem(data[1]) == false) return;
+      if (checkProblem(data[1]) == false) {
+        replier.reply("# No Problem " + data[1] + "!");
+        return;
+      }
       if (data[0] in id) {
-	var solved = checkSolve(id[data[0]], data[1]);
-	replier.reply(solved ? "풀었습니다!" : "새로운 문제는 언제나 환영이야!");
-	return;
+        var solved = checkSolve(id[data[0]], data[1]);
+        replier.reply(solved ? "풀었습니다!" : "새로운 문제는 언제나 환영이야!");
+        return;
       }
       else {
-        replier.reply("#등록되지 않은 사용자입니다.");
-	return;
+        replier.reply("# 등록되지 않은 사용자입니다.");
+        return;
       }
     }
   }
