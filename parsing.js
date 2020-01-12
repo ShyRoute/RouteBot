@@ -112,7 +112,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
     else if (input == "#cs") {
       data = data.split(" ");
-      if (data.size != 2) {
+      if (data.length != 2) {
       	replier.reply("Wrong Input!");
 	return;
       }
