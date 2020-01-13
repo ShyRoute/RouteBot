@@ -110,25 +110,25 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
             }
         }
 
-                return;
         else if (input == "#cs") {
             data = data.split(" ");
             if (data.length != 2) {
                 replier.reply("Wrong Input!");
+                return;
             }
             if (checkProblem(data[1]) == false) {
-                return;
                 replier.reply("# No Problem " + data[1] + "!");
+                return;
             }
-                var solved = checkSolve(id[data[0]], data[1]);
             if (data[0] in id) {
-        }
-            }
-                return;
-                replier.reply("# 등록되지 않은 사용자입니다.");
-            else {
-            }
-                return;
+                var solved = checkSolve(id[data[0]], data[1]);
                 replier.reply(solved ? "풀었습니다!" : "새로운 문제는 언제나 환영이야!");
+                return;
+            }
+            else {
+                replier.reply("# 등록되지 않은 사용자입니다.");
+                return;
+            }
+        }
     }
 }
