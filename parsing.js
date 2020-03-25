@@ -4,14 +4,14 @@ const room_name = [];
 const blank = "\u200b".repeat(500);
 const id = { };
 
+
 function getweb(URL) { return Utils.getWebText(URL).replace(/<[^>]+>/g, "").replace(/(<([^>]+)>)/g, "").replace(/[\n\s]{2,}/g, "\n").trim(); }
 
 function checkProblem(number) {
     try {
         var $ = getweb("https://www.acmicpc.net/problem/" + number);
         return true;
-    }
-    catch (e) {
+    } catch (e) {
         return false;
     }
 }
@@ -57,7 +57,30 @@ function foodFind(day) {
     } catch (e) {
         return ("# Parsing Error");
     }
+}
 
+function tft(id) {
+    try{
+        var data = getweb("https://lolchess.gg/profile/kr/" + id);
+        var data1 = data.split("Favorite")[2].trim().split("\n");
+        var data2 = data.split("Tier")[1].trim().split("\n");
+    
+        var result = [];
+        result[0] = data1[0].replace("d:", "d :").trim();
+        result[1] = "Tier : " + data2[0] + " - " + data2[1];
+        result[2] = "Rank : " + data2[3] + " [ " + data2[2] + " ]";
+        result[3] = "Wins : " + data2[5] + " [ " + data2[6] + " ]";
+        result[4] = "Win Rate : " + data2[8] + " [ " + data2[9] + " ]";
+        result[5] = "Top4 : " + data2[11] + " [ " + data2[12] + " ]";
+        result[6] = "Top4 Rate : " + data2[14] + " [ " + data2[15] + " ]";
+        result[7] = "Played : " + data2[17] + " [ " + data2[18] + " ]";
+        result[8] = "Avg. Rank : " + data2[20];
+
+        result = "< " + id + " >\n\n" + result.join("\n");
+        return result;
+    } catch(e) {
+        return ("No TFT Records. This summoner isn't placed yet.");
+    } 
 }
 
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
@@ -129,6 +152,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
                 replier.reply("# 등록되지 않은 사용자입니다.");
                 return;
             }
+        }
+
+        else if (input == "#tft") {
+            replier.reply(tft(data));
+            return;
         }
     }
 }
